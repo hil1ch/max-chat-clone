@@ -22,7 +22,7 @@ export const NewChatPage = () => {
         src="https://web.max.ru/_app/immutable/assets/authLogo.CnGYimnD.png"
         className="max-w-9 w-full object-cover"
       />
-      <h3 className="text-xl leading-5.5 font-semibold max-w-76 w-full">
+      <h3 className="text-xl font-semibold max-w-76 w-full">
         {isPhoneForm
           ? "Введите номер телефона получателя"
           : "С какими учетными данными хотите войти?"}

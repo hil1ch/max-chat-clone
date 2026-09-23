@@ -22,7 +22,7 @@ export const UIButton = ({
   return (
     <button
       className={cn(
-        "font-medium cursor-pointer rounded-2xl max-w-84 w-full py-4",
+        "font-medium cursor-pointer rounded-2xl w-full py-4",
         variants[variant],
         classname,
       )}
