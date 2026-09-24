@@ -19,6 +19,23 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+@theme {
+  --color-text-primary: #060708;
+  --color-input-background: #0909090d;
+  --color-action-primary: #007aff;
+  --color-action-primary-hover: #479fff;
+  --color-action-danger: red;
+  --color-surface: #fff;
+  --color-on-action: #fff;
+  --color-border-action: #007aff;
+  --color-border-subtle: #0c0d0e0f;
+  --color-message-background: #e9fdff;
+  --color-message-text: #011c29;
+  --color-message-meta: #0784b8;
+  --color-border-card: #0000001a;
+  --shadow-auth-card: 0 4px 24px #00000014;
+}
+
 #root {
   width: 1126px;
   max-width: 100%;

@@ -11,7 +11,8 @@ export const ChatPage = () => {
         <UIInput
           type="text"
           placeholder="Сообщение"
-          classname="h-12! bg-white mt-4 shrink-0"
+          classname="mt-4 shrink-0"
+          variant="messageInput"
         />
       </div>
     </div>

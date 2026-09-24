@@ -8,9 +8,9 @@ interface IUIButton extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const variants = {
-  primary: "bg-[#007aff] text-white hover:bg-[#479fff]",
-  danger: "bg-red text-white",
-  outline: "border border-[#007aff] bg-transparent text-[#007aff]",
+  primary: "bg-action-primary text-on-action hover:bg-action-primary-hover",
+  danger: "bg-action-danger text-on-action",
+  outline: "border border-action bg-transparent text-action-primary",
 };
 
 export const UIButton = ({

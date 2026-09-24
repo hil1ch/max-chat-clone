@@ -17,7 +17,7 @@ export const NewChatPage = () => {
   };
 
   return (
-    <div className="rounded-3xl bg-white max-w-145 w-full flex flex-col gap-7 items-center py-8 border border-solid border-[#0000001a] shadow-[0_4px_24px_#00000014]">
+    <div className="rounded-3xl bg-surface max-w-145 w-full flex flex-col gap-7 items-center py-8 border border-solid border-border-card shadow-auth-card">
       <img
         src="https://web.max.ru/_app/immutable/assets/authLogo.CnGYimnD.png"
         className="max-w-9 w-full object-cover"
@@ -32,8 +32,12 @@ export const NewChatPage = () => {
           <PhoneForm setIsPhoneForm={setIsPhoneForm} />
         ) : (
           <>
-            <UIInput type="text" placeholder="idInstance" />
-            <UIInput type="text" placeholder="apiTokenInstance" />
+            <UIInput type="text" placeholder="idInstance" variant="formInput" />
+            <UIInput
+              type="text"
+              placeholder="apiTokenInstance"
+              variant="formInput"
+            />
             <UIButton type="submit" variant="primary">
               Продолжить
             </UIButton>
