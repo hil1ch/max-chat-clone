@@ -8,11 +8,13 @@ import type { SubmitHandler } from "react-hook-form";
 import { useForm } from "react-hook-form";
 import type { IInputsForm } from "../../types/forms";
 
-// import { useNavigate } from "react-router";
+import { useNavigate } from "react-router";
+import { PATHS } from "../../constants/paths";
+import { STORAGE_KEYS } from "../../constants/storage";
 
 export const NewChatPage = () => {
   const [isPhoneForm, setIsPhoneForm] = useState(false);
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const {
     register,
@@ -30,7 +32,18 @@ export const NewChatPage = () => {
       return;
     }
 
-    console.log(data);
+    const phoneNumber = data.phone.replace(/\D/g, "");
+    const chatId = `${phoneNumber}@c.us`;
+
+    sessionStorage.setItem(
+      `${STORAGE_KEYS.chatConfig}:${chatId}`,
+      JSON.stringify({
+        idInstance: data.idInstance,
+        apiTokenInstance: data.apiTokenInstance,
+      }),
+    );
+
+    navigate(`/${PATHS.route.chat}/${chatId}`);
   };
 
   return (

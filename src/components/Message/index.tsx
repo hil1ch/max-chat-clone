@@ -1,9 +1,6 @@
-interface IMessage {
-  text: string;
-  time: string;
-}
+import type { MessageItem } from "../../types/messages";
 
-export const Message = ({ text, time }: IMessage) => {
+export const Message = ({ text, time }: MessageItem) => {
   return (
     <div className="relative pt-2 px-2.5 pb-2.5 bg-message-background max-w-3/4 w-fit mb-1 flex justify-self-end rounded-2xl text-left text-message-text">
       <p className="wrap-break-word whitespace-pre-wrap after:inline-block after:h-(--metaHeight) after:w-8 after:content-['']">
