@@ -4,14 +4,14 @@ import { UIInput } from "../../components/ui/UIInput";
 
 export const ChatPage = () => {
   return (
-    <div className="min-h-dvh max-w-183 w-full flex flex-col py-8">
+    <div className="h-dvh max-w-183 w-full flex flex-col py-8 overflow-hidden">
       <ChatHeader name={"Илья"} />
-      <div className="flex flex-1 items-end flex-col px-4">
+      <div className="flex flex-1 min-h-0 items-end flex-col pl-4">
         <MessageList />
         <UIInput
           type="text"
           placeholder="Сообщение"
-          classname="h-12! bg-white mt-4"
+          classname="h-12! bg-white mt-4 shrink-0"
         />
       </div>
     </div>

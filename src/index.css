@@ -24,19 +24,38 @@
   max-width: 100%;
   margin: 0 auto;
   text-align: center;
-  min-height: 100dvh;
+  height: 100dvh;
   display: flex;
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
+  overflow: hidden;
 }
 
 body {
   margin: 0;
   min-width: 0;
-  overflow-x: hidden;
+  overflow: hidden;
   background-image: url("https://web.max.ru/_app/immutable/assets/pattern_space.aFb4MW9l.svg");
-  background-color: rgb(151, 188, 252);
+  background-color: #9eddf8;
+}
+
+.chat-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(1, 28, 41, 0.3) transparent;
+}
+
+.chat-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.chat-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(1, 28, 41, 0.3);
+  border-radius: 999px;
+}
+
+.chat-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(1, 28, 41, 0.5);
 }
 
 p {
