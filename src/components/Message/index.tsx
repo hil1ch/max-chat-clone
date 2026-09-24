@@ -6,7 +6,7 @@ export const Message = ({ text, time, isIncoming }: IMessageItem) => {
     <div
       className={cn(
         "relative pt-2 px-2.5 pb-2.5 bg-message-background max-w-3/4 w-fit mb-1 flex rounded-2xl text-left text-message-text",
-        isIncoming ? "self-start" : "self-end",
+        isIncoming ? "self-start bg-surface" : "self-end",
       )}
     >
       <p className="wrap-break-word whitespace-pre-wrap after:inline-block after:h-(--metaHeight) after:w-8 after:content-['']">

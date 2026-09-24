@@ -1,8 +1,8 @@
 import { Message } from "../Message";
-import type { MessageItem } from "../../types/messages";
+import type { IMessageItem } from "../../types/messages";
 
 interface MessageListProps {
-  messages: MessageItem[];
+  messages: IMessageItem[];
 }
 
 export const MessageList = ({ messages }: MessageListProps) => {

@@ -10,6 +10,11 @@ import {
 } from "../../api/notifications";
 import { STORAGE_KEYS } from "../../constants/storage";
 import type { IMessageItem } from "../../types/messages";
+import {
+  loadChatMessages,
+  saveChatMessages,
+} from "../../utils/chatMessagesStorage";
+import { formatTime } from "../../utils/formatTime";
 
 interface ChatConfig {
   idInstance: string;
@@ -49,6 +54,15 @@ export const ChatPage = () => {
   }, [chatId]);
 
   useEffect(() => {
+    if (!chatId) {
+      return;
+    }
+
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMessages(loadChatMessages(chatId));
+  }, [chatId]);
+
+  useEffect(() => {
     if (!chatId || !chatConfig) {
       return;
     }
@@ -72,20 +86,20 @@ export const ChatPage = () => {
             text?.trim() &&
             !isCancelled
           ) {
-            setMessages((currentMessages) => [
-              ...currentMessages,
-              {
-                id: String(notification.receiptId),
-                text,
-                time: new Date(
-                  (notification.body.timestamp ?? Date.now() / 1000) * 1000,
-                ).toLocaleTimeString("ru-RU", {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                }),
-                isIncoming: true,
-              },
-            ]);
+            setMessages((currentMessages) => {
+              const updatedMessages = [
+                ...currentMessages,
+                {
+                  id: String(notification.receiptId),
+                  text,
+                  time: formatTime(notification),
+                  isIncoming: true,
+                },
+              ];
+
+              saveChatMessages(chatId, updatedMessages);
+              return updatedMessages;
+            });
           }
 
           await deleteNotification({
@@ -138,17 +152,19 @@ export const ChatPage = () => {
         chatId,
         message: trimmedMessage,
       });
-      setMessages((currentMessages) => [
-        ...currentMessages,
-        {
-          id: crypto.randomUUID(),
-          text: trimmedMessage,
-          time: new Date().toLocaleTimeString("ru-RU", {
-            hour: "2-digit",
-            minute: "2-digit",
-          }),
-        },
-      ]);
+      setMessages((currentMessages) => {
+        const updatedMessages = [
+          ...currentMessages,
+          {
+            id: crypto.randomUUID(),
+            text: trimmedMessage,
+            time: formatTime(new Date()),
+          },
+        ];
+
+        saveChatMessages(chatId, updatedMessages);
+        return updatedMessages;
+      });
       setMessage("");
     } catch (error) {
       setSendError(
