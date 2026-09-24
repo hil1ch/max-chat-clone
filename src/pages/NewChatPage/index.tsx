@@ -1,19 +1,36 @@
 import { useState } from "react";
 
-import { UIButton } from "../../components/ui/UIButton";
 import { UIForm } from "../../components/ui/UIForm";
-import { UIInput } from "../../components/ui/UIInput";
 import { PhoneForm } from "../../components/PhoneForm";
+import { InstanceForm } from "../../components/InstanceForm";
+
+import type { SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
+import type { IInputsForm } from "../../types/forms";
+
+// import { useNavigate } from "react-router";
 
 export const NewChatPage = () => {
   const [isPhoneForm, setIsPhoneForm] = useState(false);
+  // const navigate = useNavigate();
 
-  const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IInputsForm>();
 
+  const validateInput = (value: string) => {
+    return value.trim().length > 0;
+  };
+
+  const onSubmit: SubmitHandler<IInputsForm> = (data) => {
     if (!isPhoneForm) {
       setIsPhoneForm(true);
+      return;
     }
+
+    console.log(data);
   };
 
   return (
@@ -27,21 +44,20 @@ export const NewChatPage = () => {
           ? "Введите номер телефона получателя"
           : "С какими учетными данными хотите войти?"}
       </h3>
-      <UIForm onSubmit={handleSubmit}>
+      <UIForm onSubmit={handleSubmit(onSubmit)}>
         {isPhoneForm ? (
-          <PhoneForm setIsPhoneForm={setIsPhoneForm} />
+          <PhoneForm
+            setIsPhoneForm={setIsPhoneForm}
+            register={register}
+            errors={errors}
+            validateInput={validateInput}
+          />
         ) : (
-          <>
-            <UIInput type="text" placeholder="idInstance" variant="formInput" />
-            <UIInput
-              type="text"
-              placeholder="apiTokenInstance"
-              variant="formInput"
-            />
-            <UIButton type="submit" variant="primary">
-              Продолжить
-            </UIButton>
-          </>
+          <InstanceForm
+            register={register}
+            errors={errors}
+            validateInput={validateInput}
+          />
         )}
       </UIForm>
     </div>

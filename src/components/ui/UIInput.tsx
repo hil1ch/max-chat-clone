@@ -1,11 +1,10 @@
+import type { InputHTMLAttributes } from "react";
 import cn from "classnames";
 
-interface UIInput {
+interface UIInputProps extends InputHTMLAttributes<HTMLInputElement> {
   classname?: string;
-  type: string;
-  placeholder: string;
+  error?: boolean;
   variant: "formInput" | "messageInput";
-  onChange?: () => void;
 }
 
 const variants = {
@@ -15,21 +14,23 @@ const variants = {
 
 export const UIInput = ({
   classname,
-  type,
-  placeholder,
+  error,
   variant,
-  onChange,
-}: UIInput) => {
+  ...props
+}: UIInputProps) => {
   return (
-    <input
-      className={cn(
-        "px-3 py-1.5 rounded-2xl text-text-primary w-full focus:border-transparent focus:outline-none",
-        variants[variant],
-        classname,
-      )}
-      type={type}
-      placeholder={placeholder}
-      onChange={onChange}
-    ></input>
+    <div className="w-full">
+      <input
+        className={cn(
+          "px-3 py-1.5 rounded-2xl text-text-primary w-full border focus:outline-none",
+          variants[variant],
+          error && "border-action-danger focus:border-action-danger",
+          !error && "border-transparent focus:border-transparent",
+          classname,
+        )}
+        aria-invalid={Boolean(error)}
+        {...props}
+      />
+    </div>
   );
 };
