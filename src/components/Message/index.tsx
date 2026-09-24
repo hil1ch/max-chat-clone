@@ -1,8 +1,14 @@
-import type { MessageItem } from "../../types/messages";
+import type { IMessageItem } from "../../types/messages";
+import cn from "classnames";
 
-export const Message = ({ text, time }: MessageItem) => {
+export const Message = ({ text, time, isIncoming }: IMessageItem) => {
   return (
-    <div className="relative pt-2 px-2.5 pb-2.5 bg-message-background max-w-3/4 w-fit mb-1 flex justify-self-end rounded-2xl text-left text-message-text">
+    <div
+      className={cn(
+        "relative pt-2 px-2.5 pb-2.5 bg-message-background max-w-3/4 w-fit mb-1 flex rounded-2xl text-left text-message-text",
+        isIncoming ? "self-start" : "self-end",
+      )}
+    >
       <p className="wrap-break-word whitespace-pre-wrap after:inline-block after:h-(--metaHeight) after:w-8 after:content-['']">
         {text}
       </p>

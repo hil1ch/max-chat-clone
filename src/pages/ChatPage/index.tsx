@@ -4,8 +4,12 @@ import { MessageList } from "../../components/MessageList";
 import { UIInput } from "../../components/ui/UIInput";
 import { useParams } from "react-router";
 import { sendMessage } from "../../api/messages";
+import {
+  deleteNotification,
+  receiveNotification,
+} from "../../api/notifications";
 import { STORAGE_KEYS } from "../../constants/storage";
-import type { MessageItem } from "../../types/messages";
+import type { IMessageItem } from "../../types/messages";
 
 interface ChatConfig {
   idInstance: string;
@@ -14,7 +18,7 @@ interface ChatConfig {
 
 export const ChatPage = () => {
   const [message, setMessage] = useState("");
-  const [messages, setMessages] = useState<MessageItem[]>([]);
+  const [messages, setMessages] = useState<IMessageItem[]>([]);
   const [chatConfig, setChatConfig] = useState<ChatConfig | null>(null);
   const [isSending, setIsSending] = useState(false);
   const [sendError, setSendError] = useState("");
@@ -43,6 +47,77 @@ export const ChatPage = () => {
       setChatConfig(null);
     }
   }, [chatId]);
+
+  useEffect(() => {
+    if (!chatId || !chatConfig) {
+      return;
+    }
+
+    let isCancelled = false;
+    let timeoutId: number | undefined;
+
+    const pollNotifications = async () => {
+      try {
+        const notification = await receiveNotification({
+          apiUrl: import.meta.env.VITE_API_URL,
+          ...chatConfig,
+        });
+
+        if (notification) {
+          const messageData = notification.body.messageData;
+          const text = messageData?.textMessageData?.textMessage;
+
+          if (
+            messageData?.typeMessage === "textMessage" &&
+            text?.trim() &&
+            !isCancelled
+          ) {
+            setMessages((currentMessages) => [
+              ...currentMessages,
+              {
+                id: String(notification.receiptId),
+                text,
+                time: new Date(
+                  (notification.body.timestamp ?? Date.now() / 1000) * 1000,
+                ).toLocaleTimeString("ru-RU", {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                }),
+                isIncoming: true,
+              },
+            ]);
+          }
+
+          await deleteNotification({
+            apiUrl: import.meta.env.VITE_API_URL,
+            ...chatConfig,
+            receiptId: notification.receiptId,
+          });
+        }
+      } catch (error) {
+        if (!isCancelled) {
+          setSendError(
+            error instanceof Error
+              ? error.message
+              : "Не удалось получить уведомление",
+          );
+        }
+      } finally {
+        if (!isCancelled) {
+          timeoutId = window.setTimeout(pollNotifications, 1000);
+        }
+      }
+    };
+
+    void pollNotifications();
+
+    return () => {
+      isCancelled = true;
+      if (timeoutId !== undefined) {
+        window.clearTimeout(timeoutId);
+      }
+    };
+  }, [chatConfig, chatId]);
 
   const handleSubmit = async (event: SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();

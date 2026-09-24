@@ -11,6 +11,8 @@ import type { IInputsForm } from "../../types/forms";
 import { useNavigate } from "react-router";
 import { PATHS } from "../../constants/paths";
 import { STORAGE_KEYS } from "../../constants/storage";
+import { formatPhoneNumber } from "../../utils/formatPhoneNumber";
+import { validateInput } from "../../utils/validateInput";
 
 export const NewChatPage = () => {
   const [isPhoneForm, setIsPhoneForm] = useState(false);
@@ -22,17 +24,13 @@ export const NewChatPage = () => {
     formState: { errors },
   } = useForm<IInputsForm>();
 
-  const validateInput = (value: string) => {
-    return value.trim().length > 0;
-  };
-
   const onSubmit: SubmitHandler<IInputsForm> = (data) => {
     if (!isPhoneForm) {
       setIsPhoneForm(true);
       return;
     }
 
-    const phoneNumber = data.phone.replace(/\D/g, "");
+    const phoneNumber = formatPhoneNumber(data.phone);
     const chatId = `${phoneNumber}@c.us`;
 
     sessionStorage.setItem(

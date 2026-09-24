@@ -1,4 +1,4 @@
-interface SendMessageParams {
+interface ISendMessageParams {
   apiUrl: string;
   idInstance: string;
   apiTokenInstance: string;
@@ -12,7 +12,7 @@ export const sendMessage = async ({
   apiTokenInstance,
   chatId,
   message,
-}: SendMessageParams) => {
+}: ISendMessageParams) => {
   if (!apiUrl) {
     throw new Error("Не задана переменная VITE_API_URL");
   }
