@@ -4,12 +4,12 @@ import type { IMessageItem } from "../types/messages";
 const getMessagesKey = (chatId: string) =>
   `${STORAGE_KEYS.messages}:${chatId}`;
 
-const isMessageItem = (value: unknown): value is IMessageItem => {
+const isMessageItem = (value: IMessageItem) => {
   if (typeof value !== "object" || value === null) {
     return false;
   }
 
-  const message = value as Record<string, unknown>;
+  const message = value;
 
   return (
     typeof message.id === "string" &&
@@ -28,7 +28,7 @@ export const loadChatMessages = (chatId: string): IMessageItem[] => {
   }
 
   try {
-    const parsedMessages: unknown = JSON.parse(savedMessages);
+    const parsedMessages: IMessageItem = JSON.parse(savedMessages);
 
     return Array.isArray(parsedMessages)
       ? parsedMessages.filter(isMessageItem)

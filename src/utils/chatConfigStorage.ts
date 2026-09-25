@@ -4,12 +4,12 @@ import type { IChatConfig } from "../types/chat";
 const getChatConfigKey = (chatId: string) =>
   `${STORAGE_KEYS.chatConfig}:${chatId}`;
 
-const isChatConfig = (value: unknown): value is IChatConfig => {
+const isChatConfig = (value: IChatConfig) => {
   if (typeof value !== "object" || value === null) {
     return false;
   }
 
-  const config = value as Record<string, unknown>;
+  const config = value;
 
   return (
     typeof config.idInstance === "string" &&
@@ -25,7 +25,7 @@ export const loadChatConfig = (chatId: string): IChatConfig | null => {
   }
 
   try {
-    const parsedConfig: unknown = JSON.parse(savedConfig);
+    const parsedConfig: IChatConfig = JSON.parse(savedConfig);
     return isChatConfig(parsedConfig) ? parsedConfig : null;
   } catch {
     return null;
