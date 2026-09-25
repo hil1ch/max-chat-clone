@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router";
 
 import { UIForm } from "../../components/ui/UIForm";
 import { PhoneForm } from "../../components/PhoneForm";
@@ -8,11 +9,10 @@ import type { SubmitHandler } from "react-hook-form";
 import { useForm } from "react-hook-form";
 import type { IInputsForm } from "../../types/forms";
 
-import { useNavigate } from "react-router";
 import { PATHS } from "../../constants/paths";
-import { STORAGE_KEYS } from "../../constants/storage";
 import { formatPhoneNumber } from "../../utils/formatPhoneNumber";
 import { validateInput } from "../../utils/validateInput";
+import { saveChatConfig } from "../../utils/chatConfigStorage";
 
 export const NewChatPage = () => {
   const [isPhoneForm, setIsPhoneForm] = useState(false);
@@ -33,13 +33,10 @@ export const NewChatPage = () => {
     const phoneNumber = formatPhoneNumber(data.phone);
     const chatId = `${phoneNumber}@c.us`;
 
-    sessionStorage.setItem(
-      `${STORAGE_KEYS.chatConfig}:${chatId}`,
-      JSON.stringify({
-        idInstance: data.idInstance,
-        apiTokenInstance: data.apiTokenInstance,
-      }),
-    );
+    saveChatConfig(chatId, {
+      idInstance: data.idInstance,
+      apiTokenInstance: data.apiTokenInstance,
+    });
 
     navigate(`/${PATHS.route.chat}/${chatId}`);
   };
