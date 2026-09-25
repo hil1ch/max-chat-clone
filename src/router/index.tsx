@@ -1,11 +1,11 @@
-import { createBrowserRouter, Navigate } from "react-router";
+import { createHashRouter, Navigate } from "react-router";
 
 import { NewChatPage } from "../pages/NewChatPage";
 import { ChatPage } from "../pages/ChatPage";
 
 import { PATHS } from "../constants/paths";
 
-export const routes = createBrowserRouter([
+export const routes = createHashRouter([
   {
     path: PATHS.route.newChat,
     element: <NewChatPage />,
